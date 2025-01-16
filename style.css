@@ -1,0 +1,50 @@
+body
+{
+    font-family: 'Arial', sans-serif;
+    margin: 20px;
+}
+.container
+{
+    display: grid;
+    justify-content: center;
+}
+h1, h2, h3
+{
+    color: #333;
+}
+a:link, a:visited, a:hover, a:active
+{
+    color: black;
+}
+#grades_input
+{
+    width: 700px;
+    height: 100px;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    resize: vertical;
+    display: block;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+}
+#submit_button
+{
+    width: 100px;
+    height: 40px;
+    padding: 5px;
+    font-size: medium;
+    background-color: #0B57D0;
+    color: white;
+    border: none;
+    border-radius: 10px;
+}
+#gpa_output
+{
+    padding: 10px;
+    font-size: 18px;
+    margin: 0px;
+    border-radius: 5px;
+    width: max-content;
+    white-space: pre-line;
+}

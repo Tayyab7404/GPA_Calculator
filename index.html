@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>GPA Calculator</title>
+        <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+        <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+        <link rel="stylesheet" href="style.css" type="text/css">
+        <link rel="icon" href="gpa.png" type="image/x-icon"/>
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>Enter your Grades:</h1>
+            <h3>Copy and paste your grades from <a href="https://rvrjcce.ac.in/examcell/results/regnoresultsR.php" target="_blank">RVR & JC Website</a>:</h3>
+            <textarea id="grades_input"></textarea>
+            <button id="submit_button" type="submit" py-click="calculate">Calculate</button>
+            <pre id="gpa_output"></pre>
+        </div>
+
+        <py-script>
+            # This Program only works for Regular Students
+            # Need to make some adjustments for Lateral Students
+            
+            from js import document
+
+            def calculate(*args, **kwargs):
+                text = document.getElementById("grades_input").value
+
+                grades_raw = text.split("Semester")[1:]
+
+                grade_values = ["A+", "A", "B", "C", "D", "E", "F", "W"]
+
+                points = {"A+":10, "A":9, "B":8, "C":7, "D":6, "E":5, "F":0, "W":0}
+
+                credits = [[3, 3, 3, 3, 1.5, 1.5, 3, 1.5, 0],
+                        [3, 3, 3, 3, 2, 1.5, 1, 1.5, 1.5, 0],
+                        [3, 3, 3, 3, 3, 1.5, 1.5, 1.5, 2, 0],
+                        [3, 3, 3, 3, 3, 1.5, 1.5, 1.5, 2, 0],
+                        [3, 3, 3, 3, 3, 1.5, 1.5, 1.5, 2],
+                        [3, 3, 3, 3, 3, 1.5, 1.5, 1.5, 2],
+                        [3, 3, 3, 3, 3, 3, 3, 2],
+                        [12]]
+
+                grades = []
+
+                for i in grades_raw:
+                    grades_sem = []
+                    for j in i.split():
+                        if j in grade_values:
+                            grades_sem += [points.get(j, 0)]
+                    grades += [grades_sem]
+
+                total_credits = 0
+
+                for i in range(len(grades)):
+                    total_credits += sum(credits[i])
+
+                CGPA = 0
+                SGPA = [0, 0, 0, 0, 0, 0, 0, 0]
+
+                for i in range(len(grades)):
+                    for j in range(len(grades[i])):
+                        CGPA += credits[i][j] * grades[i][j]
+                        SGPA[i] += credits[i][j] * grades[i][j]
+                    SGPA[i] /= sum(credits[i]) 
+                    SGPA[i] = round(SGPA[i], 2)
+
+                CGPA /= total_credits
+                CGPA = round(CGPA, 2)
+
+                output = "<strong>SGPA:</strong><br>"
+                for i in range(len(SGPA)):
+                    output += f"Semester {i+1}: {SGPA[i]}<br>"
+
+                output += f"<br><strong>CGPA:</strong>: {CGPA}"
+                
+                document.getElementById("gpa_output").innerHTML = "<h2>Results:</h2>" + output
+        </py-script>
+    </body>
+</html>
